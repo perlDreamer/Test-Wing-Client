@@ -20,4 +20,14 @@ get '/api/env' => sub {
     };
 };
 
+post '/api/object' => sub {
+    {
+        result => {
+            method => 'POST',
+            uri    => 'api-object',
+            'params' => { params(), },
+        },
+    };
+};
+
 1;

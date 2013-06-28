@@ -31,6 +31,17 @@ is $result->{uri}, 'slash-api', 'manual fetch of /api URL';
 $result = $wing->get('env');
 
 is $result->{HTTP_USER_AGENT}, 'Winging it', 'User Agent passed through to request';
-is $result->{REMOTE_ADDR}, '192.168.0.2', 'User Agent passed through to request';
+is $result->{REMOTE_ADDR}, '192.168.0.2', 'remote IP address set';
+
+$result = $wing->post('object', { andy => 'dufresne', red => 'redding'});
+
+is $result->{method}, 'POST', 'POST works';
+cmp_deeply
+    $result->{params},
+    {
+        andy => 'dufresne',
+        red  => 'redding',
+    },
+    '.... params passed through as well';
 
 done_testing();
