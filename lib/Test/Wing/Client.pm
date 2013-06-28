@@ -120,7 +120,6 @@ sub _process_request {
     $self->last_response('');
     $self->cookie_jar->add_cookie_header($request);
     my $env = $request->to_psgi;
-    $DB::single=1;
     if ($env->{REQUEST_METHOD} eq 'POST' and exists $env->{'HTTP_X_HTTP_METHOD'}) {
         $env->{REQUEST_METHOD} = $env->{'HTTP_X_HTTP_METHOD'};
     }
