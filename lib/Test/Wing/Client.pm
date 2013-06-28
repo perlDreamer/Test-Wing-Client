@@ -69,12 +69,13 @@ A User Agent string for the request.
 
 has ip_address => (
     is          => 'rw',
-    required    => 1,
+    required    => 0,
 );
 
 has user_agent => (
     is          => 'rw',
-    required    => 1,
+    required    => 0,
+    default     => sub { "Test::Wing::Client" },
 );
 
 =head2 cookie_jar
@@ -120,6 +121,9 @@ sub _process_request {
     $self->last_response('');
     $self->cookie_jar->add_cookie_header($request);
     my $env = $request->to_psgi;
+    if ($self->ip_address) {
+        $env->{REMOTE_ADDR} = $self->ip_address;
+    }
     if ($env->{REQUEST_METHOD} eq 'POST' and exists $env->{'HTTP_X_HTTP_METHOD'}) {
         $env->{REQUEST_METHOD} = $env->{'HTTP_X_HTTP_METHOD'};
     }
