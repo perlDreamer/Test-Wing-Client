@@ -20,6 +20,7 @@ Test::Wing::Client - A simple test client to Wing's REST services.
 =head1 SYNOPSIS
 
  use Test::Wing::Client;
+ use My::Wing::App;
 
  my $wing = Test::Wing::Client->new(uri => 'https://www.thegamecrafter.com');
 
@@ -33,9 +34,9 @@ Test::Wing::Client - A simple test client to Wing's REST services.
 
 =head1 DESCRIPTION
 
-A light-weight wrapper for Wing's (L<https://github.com/plainblack/Wing>) RESTful API (an example of which can be found at: L<https://www.thegamecrafter.com/developer/>) for testing. This wrapper basically hides the request cycle from you so that you can get down to the business of using the API. It doesn't attempt to manage the data structures or objects the web service interfaces with.
+A light-weight wrapper for Wing's (L<https://github.com/plainblack/Wing>) RESTful API (an example of which can be found at: L<https://www.thegamecrafter.com/developer/>) for testing. It basically hides the request cycle from you so that you can get down to the business of testing the API. It doesn't attempt to manage the data structures or objects the web service interfaces with.
 
-This class extends L<Wing::Client> with the addition of a few properties, overriding the guts of the module that actually makes calls over HTTP, and outright ignoring the persistent L<HTTP::Thin> user agent.
+This class extends L<Wing::Client> with the addition of a few properties, overriding the guts of the module that actually makes calls over HTTP, and outright ignoring the persistent L<HTTP::Thin> user agent.  Cookies that are passed back in responses are stored locally and automatically put into outgoing requests.
 
 =head1 METHODS
 
