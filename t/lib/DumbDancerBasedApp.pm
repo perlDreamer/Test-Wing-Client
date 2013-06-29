@@ -30,4 +30,14 @@ post '/api/object' => sub {
     };
 };
 
+put '/api/object' => sub {
+    {
+        result => {
+            method => 'PUT',
+            uri    => 'api-object',
+            'params' => { params(), },
+        },
+    };
+};
+
 1;

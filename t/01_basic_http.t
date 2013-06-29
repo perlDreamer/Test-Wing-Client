@@ -44,4 +44,15 @@ cmp_deeply
     },
     '.... params passed through as well';
 
+$result = $wing->put('object', { Brooks => 'Hatlen', jake => 'the crow'});
+
+is $result->{method}, 'PUT', 'PUT works';
+cmp_deeply
+    $result->{params},
+    {
+        Brooks => 'Hatlen',
+        jake   => 'the crow',
+    },
+    '.... params passed through as well';
+
 done_testing();
