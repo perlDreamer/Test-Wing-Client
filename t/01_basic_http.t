@@ -55,4 +55,14 @@ cmp_deeply
     },
     '.... params passed through as well';
 
+$result = $wing->delete('object', { Rita => 'Haworth', });
+
+is $result->{method}, 'DELETE', 'DELETE works';
+cmp_deeply
+    $result->{params},
+    {
+        Rita => 'Haworth',
+    },
+    '.... params passed through as well';
+
 done_testing();

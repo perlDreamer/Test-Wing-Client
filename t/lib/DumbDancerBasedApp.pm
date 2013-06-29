@@ -40,4 +40,14 @@ put '/api/object' => sub {
     };
 };
 
+del '/api/object' => sub {
+    {
+        result => {
+            method => 'DELETE',
+            uri    => 'api-object',
+            'params' => { params(), },
+        },
+    };
+};
+
 1;
