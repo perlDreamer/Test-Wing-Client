@@ -6,18 +6,24 @@ use Test::Deep;
 
 use_ok 'Test::Wing::Client';
 
+{
+    my $wing = eval { Test::Wing::Client->new(); };
+    isa_ok $wing, 'Test::Wing::Client';
+    is $wing->uri, 'http://localhost', 'default hostname for making requests';
+}
+
 my $wing = Test::Wing::Client->new(
     uri => 'http://myapp.com',
     ip_address => '192.168.0.2',
 );
 
-is $wing->user_agent, 'Test::Wing::Client', 'default user agent string';
-$wing->user_agent('Winging it');
-
 isa_ok $wing, 'Test::Wing::Client';
 
 can_ok $wing, qw/get put post delete/;
 can_ok $wing, qw/last_response cookie_jar/;
+
+is $wing->user_agent, 'Test::Wing::Client', 'default user agent string';
+$wing->user_agent('Winging it');
 
 use lib 't/lib';
 use_ok 'DumbDancerBasedApp';

@@ -6,7 +6,6 @@ use Moo;
 
 extends 'Wing::Client';
 
-use Wing::Perl;
 use Dancer::Request;
 use URI;
 use HTTP::Request::Common;
@@ -36,7 +35,27 @@ Test::Wing::Client - A simple test client to Wing's REST services.
 
 A light-weight wrapper for Wing's (L<https://github.com/plainblack/Wing>) RESTful API (an example of which can be found at: L<https://www.thegamecrafter.com/developer/>) for testing. It basically hides the request cycle from you so that you can get down to the business of testing the API. It doesn't attempt to manage the data structures or objects the web service interfaces with.
 
-This class extends L<Wing::Client> with the addition of a few properties, overriding the guts of the module that actually makes calls over HTTP, and outright ignoring the persistent L<HTTP::Thin> user agent.  Cookies that are passed back in responses are stored locally and automatically put into outgoing requests.
+This class extends L<Wing::Client> with the following changes:
+
+=over
+
+=item *
+
+Added the ip_address and user_agent properties
+
+=item *
+
+The uri property is optional, and defaults to 'http://localhost'.  Since an HTTP request isn't really being made, setting the uri (HTTP_HOST) is really only needed for tenant sites in Wing and a few other minor purposes.
+
+=item *
+
+Overriding the guts of the module that actually makes calls over HTTP, and outright ignoring the persistent L<HTTP::Thin> user agent.
+
+=item *
+
+Cookies that are passed back in responses are stored locally and automatically put into outgoing requests.
+
+=back
 
 =head1 METHODS
 
@@ -67,6 +86,11 @@ A User Agent string for the request.
 =back
 
 =cut
+
+has '+uri' => (
+    required => 0,
+    default  => sub { 'http://localhost' },
+);
 
 has ip_address => (
     is          => 'rw',
