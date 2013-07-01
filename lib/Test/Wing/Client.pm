@@ -155,6 +155,7 @@ sub _process_request {
     }
     my $dancer_request = Dancer::Request->new( env => $env);
     Dancer::set logger => 'console';
+    Dancer::set log => 'debug';
     my $dancer_response = Dancer->dance( $dancer_request );
     my $response = HTTP::Response->from_psgi( $dancer_response );
     $response->request($request);
