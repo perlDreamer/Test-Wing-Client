@@ -6,6 +6,7 @@ use Moo;
 
 extends 'Wing::Client';
 
+use Dancer ();
 use Dancer::Request;
 use URI;
 use HTTP::Request::Common;
@@ -153,6 +154,7 @@ sub _process_request {
         $env->{REQUEST_METHOD} = $env->{'HTTP_X_HTTP_METHOD'};
     }
     my $dancer_request = Dancer::Request->new( env => $env);
+    Dancer::set logger => 'console';
     my $dancer_response = Dancer->dance( $dancer_request );
     my $response = HTTP::Response->from_psgi( $dancer_response );
     $response->request($request);
