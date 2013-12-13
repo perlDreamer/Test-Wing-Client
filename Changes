@@ -1,2 +1,8 @@
-July 1, 2013
-    Initial release
+0.02 2013-12-12
+  - Use CPAN changes spec
+  - Allow the uri parameter to be optional, and provide a sane default
+  - Set console logging for Dancer
+  - Add a way for extra HTTP headers to be added to the request that's built internally.
+
+0.01 2013-07-01
+  - Initial release

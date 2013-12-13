@@ -84,6 +84,24 @@ A User Agent string for the request.
 
 =back
 
+=item extra_headers
+
+An array ref of extra HTTP headers.  These headers are cleared out immediately
+after the request is made.
+
+=item add_headers
+
+Push a list of headers on the C<extra_headers> array.
+
+=item has_headers
+
+Returns true if there are headers to add.  Should almost always be true since we add
+a User-Agent headers to the request by default.
+
+=item clear_headers
+
+Clear all internal headers.  You should not need to call this.
+
 =back
 
 =cut
@@ -102,6 +120,12 @@ has user_agent => (
     is          => 'rw',
     required    => 0,
     default     => sub { "Test::Wing::Client" },
+);
+
+has extra_headers => (
+    is          => 'rw',
+    required    => 0,
+    default     => sub { [] },
 );
 
 =head2 cookie_jar
@@ -140,11 +164,33 @@ around _create_uri => sub {
     return $uri;
 };
 
+sub add_header {
+    my $self = shift;
+    push @{ $self->extra_headers }, @_
+}
+
+sub has_headers {
+    return scalar @{ $_[0]->extra_headers };
+}
+
+sub _add_headers_to_request {
+    my ($self, $request) = @_;
+    ##Okay, we add a header but we check anyway since I may change this later
+    return unless $self->has_headers;
+    $request->header(@{ $self->extra_headers });
+}
+
+sub clear_headers {
+    my $self = shift;
+    $self->extra_headers([]);
+}
+
 sub _process_request {
     my $self = shift;
     my $request = shift;
-    $request->header('User-Agent' => $self->user_agent);
     $self->last_response('');
+    $self->add_header('User-Agent' => $self->user_agent);
+    $self->_add_headers_to_request($request);
     $self->cookie_jar->add_cookie_header($request);
     my $env = $request->to_psgi;
     if ($self->ip_address) {
@@ -161,6 +207,7 @@ sub _process_request {
     $response->request($request);
     $self->cookie_jar->extract_cookies($response);
     $self->last_response($response);
+    $self->clear_headers;
     return $self->_process_response($response);
 }
 
