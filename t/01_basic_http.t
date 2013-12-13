@@ -76,8 +76,7 @@ can_ok $wing, qw/has_headers add_header/;
 $wing->add_header(ORIGIN => 'http://www.otherdomain.com');
 ok $wing->has_headers, 'Got at least one header';
 $result = $wing->get('headers');
-diag explain $result;
-diag explain $wing->last_response;
+is $result->{'ORIGIN'}, 'http://www.otherdomain.com', 'ORIGIN passed and received';
 ok !$wing->has_headers, 'Extra headers have been removed after the request';
 
 done_testing();

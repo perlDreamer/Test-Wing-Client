@@ -13,9 +13,18 @@ get '/api' => sub {
 };
 
 get '/api/env' => sub {
-    my $environ = request->env;
+    my %environ = map { $_ => request->env->{$_} }
+    qw/SERVER_NAME PATH_INFO HTTP_USER_AGENT HTTP_COOKIE REMOTE_ADDR REQUEST_URI HTTP_HOST/;
     {
-        result => $environ,
+        result => \%environ,
+    };
+};
+
+get '/api/headers' => sub {
+    $DB::single=1;
+    my %headers = map { $_ => request->headers->header($_) } request->headers->header_field_names;
+    {
+        result => \%headers,
     };
 };
 
