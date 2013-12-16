@@ -3,6 +3,13 @@ package DumbDancerBasedApp;
 use Dancer;
 set serializer => 'JSON';
 
+options '**' => sub {
+    my %headers = map { $_ => request->headers->header($_) } request->headers->header_field_names;
+    {
+        result => \%headers,
+    };
+};
+
 get '/api' => sub {
     {
         result => {
@@ -21,7 +28,6 @@ get '/api/env' => sub {
 };
 
 get '/api/headers' => sub {
-    $DB::single=1;
     my %headers = map { $_ => request->headers->header($_) } request->headers->header_field_names;
     {
         result => \%headers,

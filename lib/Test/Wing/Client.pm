@@ -211,6 +211,32 @@ sub _process_request {
     return $self->_process_response($response);
 }
 
+=head2 options(path, headers)
+
+Performs an C<OPTIONs> request, which is used for CrossOrigin verification
+
+=over
+
+=item path
+
+The path to the REST interface you wish to call. You can abbreviate and leave off the C</api/> part if you wish.
+
+=item headers
+
+An array reference of headers to send with the request.
+
+=back
+
+=cut
+
+sub options {
+    my ($self, $path, $headers) = @_;
+    $headers //= [];
+    my $uri = $self->_create_uri($path);
+    my $request = HTTP::Request->new('OPTIONS', $uri->as_string, $headers);
+    return $self->_process_request( $request );
+}
+
 =head1 SUPPORT
 
 =over
