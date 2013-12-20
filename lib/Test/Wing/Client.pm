@@ -89,7 +89,7 @@ A User Agent string for the request.
 An array ref of extra HTTP headers.  These headers are cleared out immediately
 after the request is made.
 
-=item add_headers
+=item add_header
 
 Push a list of headers on the C<extra_headers> array.
 
