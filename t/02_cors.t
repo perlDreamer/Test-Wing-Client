@@ -18,13 +18,13 @@ can_ok $wing, qw/options/;
 my $result;
 
 $result = $wing->options('/api');
-is $result->{Host}, 'myapp.com';
+is $result->{Host}, 'myapp.com', 'Received host header';
 
 $result = $wing->options('/api', [
     'Access-Control-Request-Method' => 'POST',
     'Origin' => 'http://www.example.com',
 ]);
-is $result->{Origin}, 'http://www.example.com', 'cycled Origin header';
-is $result->{'Access-Control-Request-Method'}, 'POST', 'cycled Request-Method header';
+is $result->{ORIGIN}, 'http://www.example.com', 'cycled Origin header';
+is $result->{'ACCESS-CONTROL-REQUEST-METHOD'}, 'POST', 'cycled Request-Method header';
 
 done_testing();
