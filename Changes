@@ -1,3 +1,7 @@
+0.03 2013-03-05
+  - Separate test requirements from regular ones.
+  - Add the ability to set a session_id in the object.
+
 0.02 2013-12-12
   - Use CPAN changes spec
   - Allow the uri parameter to be optional, and provide a sane default

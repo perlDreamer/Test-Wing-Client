@@ -34,6 +34,16 @@ get '/api/headers' => sub {
     };
 };
 
+get '/api/object' => sub {
+    {
+        result => {
+            method => 'GET',
+            uri    => 'api-object',
+            'params' => { params(), },
+        },
+    };
+};
+
 post '/api/object' => sub {
     {
         result => {

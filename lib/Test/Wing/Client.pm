@@ -42,7 +42,7 @@ This class extends L<Wing::Client> with the following changes:
 
 =item *
 
-Added the ip_address and user_agent properties
+Added the ip_address, user_agent and session_id properties
 
 =item *
 
@@ -82,6 +82,15 @@ The IP address used to build the request.
 
 A User Agent string for the request.
 
+=item session_id
+
+A Wing session_id.  If set, this is automatically added to all requests because I'm lazy.  If you don't
+want a session_id for a while, set the C<no_session_id> flag on the object.
+
+=item no_session_id
+
+If set to true, prevents adding the session_id to the request.
+
 =back
 
 =item extra_headers
@@ -111,7 +120,7 @@ has '+uri' => (
     default  => sub { 'http://localhost' },
 );
 
-has ip_address => (
+has [qw/ip_address session_id no_session_id/] => (
     is          => 'rw',
     required    => 0,
 );
@@ -163,6 +172,22 @@ around _create_uri => sub {
     $uri->scheme('http') unless defined $uri->scheme;
     return $uri;
 };
+
+sub _add_session_id {
+    my $orig   = shift;
+    my $self   = shift;
+    my $uri    = shift;
+    my $params = shift || {};
+    if ($self->session_id && ! $self->no_session_id && ! exists $params->{session_id}) {
+        $params->{session_id} = $self->session_id;
+    }
+    return $self->$orig($uri, $params, @_);
+}
+
+around get => \&_add_session_id;
+around post => \&_add_session_id;
+around put => \&_add_session_id;
+around delete => \&_add_session_id;
 
 sub add_header {
     my $self = shift;
